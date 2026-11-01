@@ -116,10 +116,10 @@ function speak(text){
 async function answer(text){
   state.textContent = "CONSULTANDO GEMINI...";
 
-  try {
-    const response = await fetch(
-      "https://falling-term-1639.paulovictor-oficial2022.workers.dev/",
-      {
+ try {
+ const response = await fetch(
+ "https://falling-term-1639.paulovictor-oficial2022.workers.dev/",
+    {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -137,11 +137,6 @@ async function answer(text){
     const r = data.answer || "Não consegui responder.";
     add("JARVIS: " + r, "bot");
     speak(r);
-
-  } catch (error) {
-    add("JARVIS: Não consegui acessar minha inteligência artificial. Verifique a conexão.", "bot");
-    state.textContent = "ERRO DE CONEXÃO";
-  }
 }
  if(t.includes("hora"))
  r="Agora são "+new Date().toLocaleTimeString("pt-BR")+".";
