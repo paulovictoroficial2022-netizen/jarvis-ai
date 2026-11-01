@@ -113,11 +113,36 @@ function speak(text){
  s.onend=()=>state.textContent="AGUARDANDO COMANDO";
  speechSynthesis.speak(s);
 }
+async function answer(text){
+  state.textContent = "CONSULTANDO GEMINI...";
 
-function answer(text){
- const t=text.toLowerCase();
- let r="Esse recurso ainda está em desenvolvimento. Em breve poderei utilizar inteligência artificial para responder perguntas mais complexas.";
+  try {
+    const response = await fetch(
+      "https://falling-term-1639.paulovictor-oficial2022.workers.dev/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: text })
+      }
+    );
 
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Falha na conexão");
+    }
+
+    const r = data.answer || "Não consegui responder.";
+    add("JARVIS: " + r, "bot");
+    speak(r);
+
+  } catch (error) {
+    add("JARVIS: Não consegui acessar minha inteligência artificial. Verifique a conexão.", "bot");
+    state.textContent = "ERRO DE CONEXÃO";
+  }
+}
  if(t.includes("hora"))
  r="Agora são "+new Date().toLocaleTimeString("pt-BR")+".";
  else if(t.includes("dia")||t.includes("data"))
